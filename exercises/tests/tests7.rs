@@ -34,18 +34,24 @@
 // Execute `rustlings hint tests7` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
+use std::time::{SystemTime, UNIX_EPOCH};
 
-fn main() {}
+fn main() {
+    let timestamp = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .expect("Time went backwards")
+        .as_secs();
+    println!("cargo:rustc-env=TEST_FOO={}", timestamp);
+}
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+    use std::time::{SystemTime, UNIX_EPOCH};
 
     #[test]
     fn test_success() {
-        let timestamp = std::time::SystemTime::now()
-            .duration_since(std::time::UNIX_EPOCH)
+        let timestamp = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
             .unwrap()
             .as_secs();
         let s = std::env::var("TEST_FOO").unwrap();
